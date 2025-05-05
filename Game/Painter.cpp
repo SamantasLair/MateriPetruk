@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+
 using namespace std;
 
 /*
@@ -43,6 +45,7 @@ it will make matters complicated as it need to access theWorld array
 void paint(int sizeX, int sizeY, painter p) {
     int x = p.getX();
     int y = p.getY();
+    
     char theWorld[sizeY][sizeX];
     for (int i = 0; i < sizeY; i++) {
         for (int j = 0; j < sizeX; j++) {

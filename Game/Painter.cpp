@@ -14,6 +14,20 @@ private:
     int rows = 0;
     int cols = 0;
 
+    void errorWorld(string errMsg) { //Mengeluarkan world dan pesan errornya
+        cerr << "Error : "<< errMsg << endl;
+        cerr << "Dunia sebelum error : " << endl;
+        (*world)[posY][posX] = painterChar[painterDirection];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cerr << (*world)[i][j] << ' ';
+            }
+            cerr << endl;
+        }
+        cerr << endl;
+
+    }
+
 public:
     int painterDirection = 0;
     char painterChar[4] = {'>', 'v', '<', '^'};
@@ -34,13 +48,23 @@ public:
         }
     }
 
+    
+
     void move() {
-        switch(painterDirection) {
-            case 0: posX++; break;
-            case 1: posY++; break;
-            case 2: posX--; break;
-            case 3: posY--; break;
-        }
+        if (world != nullptr)
+            if (isFrontClear())
+                switch(painterDirection) {
+                    case 0: posX++; break;
+                    case 1: posY++; break;
+                    case 2: posX--; break;
+                    case 3: posY--; break;
+                }
+            else {
+                errorWorld("Tidak dapat maju karena terhalang");
+                exit(0);
+            }
+        else cerr << "Tidak ada world yang terbaca" << endl;
+
     }
 
     int getX() { return this->posX; }
@@ -54,13 +78,15 @@ public:
         }
     }
     void putWall() {
-        if (world != nullptr) {
+        if (world != nullptr ) {
+            if (isFrontClear())
             switch(painterDirection) {
                 case 0: (isFrontClear()) ? (*world)[posY][posX + 1] = '#' : (*world)[posY][posX] = '#'; break;
                 case 1: (isFrontClear()) ? (*world)[posY + 1][posX] = '#' : (*world)[posY][posX] = '#'; break;
                 case 2: (isFrontClear()) ? (*world)[posY][posX - 1] = '#' : (*world)[posY][posX] = '#'; break;
                 case 3: (isFrontClear()) ? (*world)[posY - 1][posX] = '#' : (*world)[posY][posX] = '#'; break;
             }
+            else cerr << "Front is not clear" << endl;
         }
     }
     bool isFrontClear() {
@@ -73,11 +99,12 @@ public:
         return false;
     }
 
-    void pickUpPaint() {
+    void cleanPaint() {
         if (world != nullptr){
             (*world)[posY][posX] = '.';
         }
     }
+
 };
 /*
 Note :
@@ -87,7 +114,7 @@ the problem is, if i use the method from painter object,
 it will make matters complicated as it need to access theWorld array,
 fuck it we gonna make it work with pointer
 */
-painter codeBlock(painter p, vector<vector<char>>& world) {
+painter codeBlock(painter p) {
     while (p.isFrontClear())
     {
         p.paint();
@@ -96,19 +123,23 @@ painter codeBlock(painter p, vector<vector<char>>& world) {
         p.move();
         p.turnLeft();
     }
-    p.turnLeft();
-    p.pickUpPaint();
-    p.putWall();
-    p.turnLeft();
-    p.move();
-    
     return p;
+}
+
+void setup(vector<vector<char>>& world) {
+    for (int i = 0; i < world.size(); i++) {
+        for (int j = 0; j < world[i].size(); j++) {
+            if (i == 5)
+            world[i][j] = '#';
+        }
+    }
 }
 
 void paintWorld(int sizeX, int sizeY, painter& p) {
     vector<vector<char>> world(sizeY, vector<char>(sizeX, '.'));
     p.setWorld(&world); // Pass the world to class
-    p = codeBlock(p, world);
+    setup(world);
+    p = codeBlock(p);
 
     world[p.getY()][p.getX()] = p.painterChar[p.painterDirection];
     

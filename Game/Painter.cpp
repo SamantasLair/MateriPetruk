@@ -10,7 +10,9 @@ that will be used in structured programming lesson.
 class painter {
 private:
     int posX, posY;
-    vector<vector<char>>* world; 
+    vector<vector<char>>* world;
+    int rows = 0;
+    int cols = 0;
 
 public:
     int painterDirection = 0;
@@ -24,6 +26,12 @@ public:
 
     void setWorld(vector<vector<char>>* world) {
         this->world = world;
+        if (world != nullptr) {
+            rows = world->size();
+            cols = world->at(0).size();
+        } else {
+            std::cerr << "Error: pointer ke null" << std::endl;
+        }
     }
 
     void move() {
@@ -42,7 +50,32 @@ public:
     void turnRight() { painterDirection = (painterDirection + 1) % 4; }
     void paint() {
         if (world != nullptr) {
-            (*world)[posY][posX] = '#';
+            (*world)[posY][posX] = '@';
+        }
+    }
+    void putWall() {
+        if (world != nullptr) {
+            switch(painterDirection) {
+                case 0: (isFrontClear()) ? (*world)[posY][posX + 1] = '#' : (*world)[posY][posX] = '#'; break;
+                case 1: (isFrontClear()) ? (*world)[posY + 1][posX] = '#' : (*world)[posY][posX] = '#'; break;
+                case 2: (isFrontClear()) ? (*world)[posY][posX - 1] = '#' : (*world)[posY][posX] = '#'; break;
+                case 3: (isFrontClear()) ? (*world)[posY - 1][posX] = '#' : (*world)[posY][posX] = '#'; break;
+            }
+        }
+    }
+    bool isFrontClear() {
+        switch(painterDirection) {
+            case 0: return (posX + 1 < cols && (*world)[posY][posX + 1] != '#');
+            case 1: return (posY + 1 < rows && (*world)[posY + 1][posX] != '#');
+            case 2: return (posX - 1 >= 0 && (*world)[posY][posX - 1] != '#');
+            case 3: return (posY - 1 >= 0 && (*world)[posY - 1][posX] != '#');
+        }
+        return false;
+    }
+
+    void pickUpPaint() {
+        if (world != nullptr){
+            (*world)[posY][posX] = '.';
         }
     }
 };
@@ -55,13 +88,20 @@ it will make matters complicated as it need to access theWorld array,
 fuck it we gonna make it work with pointer
 */
 painter codeBlock(painter p, vector<vector<char>>& world) {
-    for (int i = 0; i < 5; i++){
+    while (p.isFrontClear())
+    {
         p.paint();
         p.move();
         p.turnRight();
         p.move();
         p.turnLeft();
     }
+    p.turnLeft();
+    p.pickUpPaint();
+    p.putWall();
+    p.turnLeft();
+    p.move();
+    
     return p;
 }
 
@@ -72,7 +112,6 @@ void paintWorld(int sizeX, int sizeY, painter& p) {
 
     world[p.getY()][p.getX()] = p.painterChar[p.painterDirection];
     
-    // Print the world
     for (int i = 0; i < sizeY; i++) {
         for (int j = 0; j < sizeX; j++) {
             cout << world[i][j] << ' ';

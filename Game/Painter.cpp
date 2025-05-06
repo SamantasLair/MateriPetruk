@@ -115,14 +115,7 @@ it will make matters complicated as it need to access theWorld array,
 fuck it we gonna make it work with pointer
 */
 painter codeBlock(painter p) {
-    while (p.isFrontClear())
-    {
-        p.paint();
-        p.move();
-        p.turnRight();
-        p.move();
-        p.turnLeft();
-    }
+
     return p;
 }
 
@@ -130,7 +123,7 @@ void setup(vector<vector<char>>& world) {
     for (int i = 0; i < world.size(); i++) {
         for (int j = 0; j < world[i].size(); j++) {
             if (i == 5)
-            world[i][j] = '#';
+            world[i][j] = '.';
         }
     }
 }
@@ -142,17 +135,25 @@ void paintWorld(int sizeX, int sizeY, painter& p) {
     p = codeBlock(p);
 
     world[p.getY()][p.getX()] = p.painterChar[p.painterDirection];
-    
+    for (int i = 0; i < sizeX +2; i++) {
+        cout << "- ";
+    }
+    cout<< endl;
     for (int i = 0; i < sizeY; i++) {
+        cout << "| ";
         for (int j = 0; j < sizeX; j++) {
             cout << world[i][j] << ' ';
         }
+        cout << "|";
         cout << endl;
+    }
+    for (int i = 0; i < sizeX +2; i++) {
+        cout << "- ";
     }
 }
 
 int main() {
-    int sizeX = 10;
+    int sizeX = 20;
     int sizeY = 10;
     painter p(0, 0);
 

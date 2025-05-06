@@ -159,3 +159,5 @@ int main() {
     paintWorld(sizeX, sizeY, p);
     return 0;
 }
+
+// @author : Samanta

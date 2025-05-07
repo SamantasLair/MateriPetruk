@@ -71,7 +71,6 @@ public:
     int getY() { return this->posY; }
 
     void turnLeft() { painterDirection = (painterDirection + 3) % 4; }
-    void turnRight() { painterDirection = (painterDirection + 1) % 4; }
     void paint() {
         if (world != nullptr) {
             (*world)[posY][posX] = '@';
@@ -115,7 +114,7 @@ it will make matters complicated as it need to access theWorld array,
 fuck it we gonna make it work with pointer
 */
 painter codeBlock(painter p) {
-
+    // Kode kamu disini
     return p;
 }
 
@@ -128,28 +127,34 @@ void setup(vector<vector<char>>& world) {
     }
 }
 
-void paintWorld(int sizeX, int sizeY, painter& p) {
-    vector<vector<char>> world(sizeY, vector<char>(sizeX, '.'));
-    p.setWorld(&world); // Pass the world to class
-    setup(world);
-    p = codeBlock(p);
-
+void printWorld(vector<vector<char>>& world, painter& p) {
+    // for (int i = 0; i < sizeX +2; i++) {
+    //     cout << "- ";
+    // }
     world[p.getY()][p.getX()] = p.painterChar[p.painterDirection];
-    for (int i = 0; i < sizeX +2; i++) {
-        cout << "- ";
-    }
-    cout<< endl;
-    for (int i = 0; i < sizeY; i++) {
+    for (int i = 0; i < world.size(); i++) {
         cout << "| ";
-        for (int j = 0; j < sizeX; j++) {
+        for (int j = 0; j < world[i].size(); j++) {
             cout << world[i][j] << ' ';
         }
         cout << "|";
         cout << endl;
     }
-    for (int i = 0; i < sizeX +2; i++) {
-        cout << "- ";
-    }
+    // for (int i = 0; i < sizeX +2; i++) {
+    //     cout << "- ";
+    // }
+}
+
+void paintWorld(int sizeX, int sizeY, painter& p) {
+    vector<vector<char>> world(sizeY, vector<char>(sizeX, '.'));
+    setup(world);
+    p.setWorld(&world); // Pass the world to class
+    cout << "World setup :" << endl;
+    printWorld(world, p);
+    cout << endl << "World kamu :" << endl;
+    printWorld(world, p);
+    p = codeBlock(p);
+
 }
 
 int main() {

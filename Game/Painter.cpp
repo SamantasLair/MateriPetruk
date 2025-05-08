@@ -115,6 +115,19 @@ fuck it we gonna make it work with pointer
 */
 painter codeBlock(painter p) {
     // Kode kamu disini
+    p.paint();
+    p.move();
+    p.turnLeft();
+    p.turnLeft();
+    p.turnLeft();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+
+    
     return p;
 }
 

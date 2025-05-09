@@ -48,7 +48,9 @@ public:
         }
     }
 
-    
+    vector<vector<char>>* getWorld() { 
+        return world; 
+    }    
 
     void move() {
         if (world != nullptr)
@@ -115,7 +117,35 @@ fuck it we gonna make it work with pointer
 */
 painter codeBlock(painter p) {
     // Kode kamu disini
+            p.paint();
+    p.move();
+    p.turnLeft();
+    p.turnLeft();
+    p.turnLeft();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.paint();
+    p.move();
 
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.paint();
+    p.move();
+    p.turnLeft();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
+    p.move();
+    p.paint();
     
     return p;
 }
@@ -133,39 +163,8 @@ void printWorld(vector<vector<char>>& world, painter& p) {
     // for (int i = 0; i < sizeX +2; i++) {
     //     cout << "- ";
     // }
-        p.paint();
-    p.move();
-    p.turnLeft();
-    p.turnLeft();
-    p.turnLeft();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
-        p.paint();
-    p.move();
-    p.turnLeft();
-    p.turnLeft();
-    p.turnLeft();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
-        p.paint();
-    p.move();
-    p.turnLeft();
-    p.turnLeft();
-    p.turnLeft();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
-    p.move();
-    p.paint();
+    world = *(p.getWorld());
+    
     world[p.getY()][p.getX()] = p.painterChar[p.painterDirection];
     for (int i = 0; i < world.size(); i++) {
         cout << "| ";
@@ -187,8 +186,8 @@ void paintWorld(int sizeX, int sizeY, painter& p) {
     cout << "World setup :" << endl;
     printWorld(world, p);
     cout << endl << "World kamu :" << endl;
-    printWorld(world, p);
     p = codeBlock(p);
+    printWorld(world, p);
 
 }
 

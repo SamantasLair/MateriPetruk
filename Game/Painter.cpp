@@ -194,6 +194,7 @@ void paintWorld(int sizeX, int sizeY, painter& p) {
 int main() {
     int sizeX = 20;
     int sizeY = 10;
+    cin>>sizeX>>sizeY;
     painter p(0, 0);
 
     paintWorld(sizeX, sizeY, p);
